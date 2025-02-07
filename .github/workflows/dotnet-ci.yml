@@ -1,0 +1,33 @@
+﻿
+name: .NET CI - Build & Test
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name:  Checkout Code
+        uses: actions/checkout@v3
+
+      - name:  Set Up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.102' # Update if using .NET 7 or 6
+
+      - name:  Install Dependencies
+        run: dotnet restore
+
+      - name:  Build the Project
+        run: dotnet build --configuration Release --no-restore
+
+      - name:  Run Tests
+        run: dotnet test --configuration Release --no-build --verbosity normal
