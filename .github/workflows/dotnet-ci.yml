@@ -1,32 +1,31 @@
-name: .NET CI - Build & Test
+name: Build and Test TodoApp
+
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
   pull_request:
     branches:
-      - master
-      - develop
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  Checkout Code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name:  Set Up .NET SDK
+      - name: Set Up .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.102' # Update if using .NET 7 or 6
+          dotnet-version: '9.0.102'
 
-      - name:  Install Dependencies
-        run: dotnet restore
+      - name: Install Dependencies
+        run: dotnet restore todo.sln
 
-      - name:  Build the Project
-        run: dotnet build --configuration Release --no-restore
+      - name: Build the Project
+        run: dotnet build todo.sln --configuration Release --no-restore
 
-      - name:  Run Tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+      - name: Run Tests
+        run: dotnet test Tests/Tests.csproj --configuration Release --no-build --verbosity normal
